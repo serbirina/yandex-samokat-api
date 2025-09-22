@@ -1,5 +1,6 @@
 package ru.yandex.practicum;
 
+import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
 import ru.yandex.practicum.models.Order;
@@ -20,15 +21,15 @@ public class CreateOrderWithVariousColorOptionsTest extends BaseTest {
 
     private final OrderSteps orderSteps = new OrderSteps();
     private final Order order = new Order();
-    private final TrackOrder trackOrder = new TrackOrder();
 
     private final List<String> color;
+    private ValidatableResponse response;
 
     public CreateOrderWithVariousColorOptionsTest(List<String> color) {
         this.color = color;
     }
 
-    @Parameterized.Parameters
+    @Parameterized.Parameters(name = "Test data: scooter color - {0}")
     public static Object[][] getParameters() {
         return new Object[][]{
                 {List.of("BLACK")},
@@ -52,19 +53,21 @@ public class CreateOrderWithVariousColorOptionsTest extends BaseTest {
 
     @Test
     @DisplayName("Order creation returns 201 Created with various color combinations")
-    public void createOrder_WithVariousColorOptions_ShouldReturn201() {
+    @Description("Verify that an order can be created with black, grey, both colors, or with no color selected.\nExpected result: HTTP 201 response and the order tracking number in the response body.")
+    public void createOrderWithVariousColorOptionsShouldReturn201() {
         order.setColor(color);
 
-        ValidatableResponse response = orderSteps.createOrder(order);
+        response = orderSteps.createOrder(order);
 
         orderSteps.assertThatOrderCreated(response);
-
-        int trackId = response.extract().jsonPath().getInt("track");
-        trackOrder.setTrack(trackId);
     }
 
     @After
     public void cleanUp() {
+        int trackId = response.extract().jsonPath().getInt("track");
+        TrackOrder trackOrder = new TrackOrder();
+        trackOrder.setTrack(trackId);
+
         orderSteps
                 .cancelOrder(trackOrder)
                 .statusCode(HTTP_OK);

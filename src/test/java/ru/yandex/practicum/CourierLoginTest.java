@@ -1,5 +1,6 @@
 package ru.yandex.practicum;
 
+import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
 import ru.yandex.practicum.models.Courier;
@@ -22,7 +23,8 @@ public class CourierLoginTest extends BaseTest {
 
     @Test
     @DisplayName("Login returns 200 OK with valid login and password")
-    public void loginCourier_WithValidLoginAndPassword_ShouldReturn200() {
+    @Description("Verify that a courier can log in using valid credentials.\nExpected result: HTTP 200 response and the courier ID in the response body.")
+    public void loginCourierWithValidLoginAndPasswordShouldReturn200() {
         ValidatableResponse response = courierSteps.logInAsCourier(courier);
 
         courierSteps.assertThatCourierLoggedIn(response);
@@ -30,7 +32,8 @@ public class CourierLoginTest extends BaseTest {
 
     @Test
     @DisplayName("Should return 400 when login field is missing")
-    public void loginCourier_WithoutLogin_ShouldReturn400() {
+    @Description("Verify that a courier cannot log in when the login field is missing.\nExpected result: HTTP 400 response and an error message \"Недостаточно данных для входа\" in response body.")
+    public void loginCourierWithoutLoginShouldReturn400() {
         Courier incorrectCourier = new Courier()
                 .setPassword("qwerty123");
 
@@ -43,7 +46,8 @@ public class CourierLoginTest extends BaseTest {
 
     @Test
     @DisplayName("Should return 400 when password field is missing")
-    public void loginCourier_WithoutPassword_ShouldReturn400() {
+    @Description("Verify that a courier cannot log in when the password field is missing.\nExpected result: HTTP 400 response and an error message \"Недостаточно данных для входа\" in response body.")
+    public void loginCourierWithoutPasswordShouldReturn400() {
         Courier incorrectCourier = new Courier()
                 .setLogin("couriersamokata1");
 
@@ -55,7 +59,8 @@ public class CourierLoginTest extends BaseTest {
 
     @Test
     @DisplayName("Should return 404 when logging in as a non-existent user")
-    public void loginCourier_WithNonExistentUser_ShouldReturn404() {
+    @Description("Verify that a courier cannot log in using credentials of a non-existent user.\nExpected result: HTTP 404 response and an error message \"Учетная запись не найдена\" in response body.")
+    public void loginCourierWithNonExistentUserShouldReturn404() {
         Courier incorrectCourier = new Courier()
                 .setLogin("customer")
                 .setPassword("Pass_321!");
@@ -68,7 +73,8 @@ public class CourierLoginTest extends BaseTest {
 
     @Test
     @DisplayName("Should return 404 when login is incorrect")
-    public void loginCourier_WithIncorrectLogin_ShouldReturn404() {
+    @Description("Verify that a courier cannot log in using incorrect login.\nExpected result: HTTP 404 response and an error message \"Учетная запись не найдена\" in response body.")
+    public void loginCourierWithIncorrectLoginShouldReturn404() {
         Courier incorrectCourier = new Courier()
                 .setLogin("curirsomokata1")
                 .setPassword("qwerty123");
@@ -81,7 +87,8 @@ public class CourierLoginTest extends BaseTest {
 
     @Test
     @DisplayName("Should return 404 when password is incorrect")
-    public void loginCourier_WithIncorrectPassword_ShouldReturn404() {
+    @Description("Verify that a courier cannot log in using incorrect password.\nExpected result: HTTP 404 response and an error message \"Учетная запись не найдена\" in response body.")
+    public void loginCourierWithIncorrectPasswordShouldReturn404() {
         Courier incorrectCourier = new Courier()
                 .setLogin("couriersamokata1")
                 .setPassword("qwer321!");

@@ -1,5 +1,6 @@
 package ru.yandex.practicum;
 
+import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
 import ru.yandex.practicum.models.Order;
@@ -38,7 +39,8 @@ public class GetOrderListTest extends BaseTest {
 
     @Test
     @DisplayName("Getting list of orders returns 200 and contains a list of orders in response body")
-    public void getListOfOrders_WithValidRequest_ShouldReturn200AndOrderList() {
+    @Description("Verify that a valid request returns a list of orders.\nExpected result: HTTP 200 response and a list of orders in the response body.")
+    public void getListOfOrdersWithValidRequestShouldReturn200AndOrderList() {
         ValidatableResponse response = orderSteps.getListOfOrders();
 
         orderSteps.assertThatOrderContainListOfOrder(response);

@@ -1,5 +1,6 @@
 package ru.yandex.practicum;
 
+import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
 import ru.yandex.practicum.steps.CourierSteps;
@@ -15,7 +16,8 @@ public class CreatingACourierTest extends BaseTest {
 
     @Test
     @DisplayName("Should return 201 when creating a courier with valid required fields")
-    public void createCourier_WithValidRequiredFields_ShouldReturn201() {
+    @Description("Verify that a courier can be created with valid required fields.\nExpected result: HTTP 201 response and \"ok: true\" in response body.")
+    public void createCourierWithValidRequiredFieldsShouldReturn201() {
         courier
                 .setLogin("couriersamokata1")
                 .setPassword("qwerty123");
@@ -29,7 +31,8 @@ public class CreatingACourierTest extends BaseTest {
 
     @Test
     @DisplayName("Should return 400 when creating a courier without login")
-    public void createCourier_WithoutLogin_ShouldReturn400() {
+    @Description("Verify that creating a courier without a login fails.\nExpected result: HTTP 400 response and an error message \"Недостаточно данных для создания учетной записи\" in response body.")
+    public void createCourierWithoutLoginShouldReturn400() {
         courier
                 .setPassword("qwerty123");
 
@@ -41,7 +44,8 @@ public class CreatingACourierTest extends BaseTest {
 
     @Test
     @DisplayName("Should return 400 when creating a courier without password")
-    public void createCourier_WithoutPassword_ShouldReturn400() {
+    @Description("Verify that creating a courier without a password fails.\nExpected result: HTTP 400 response and an error message \"Недостаточно данных для создания учетной записи\" in response body.")
+    public void createCourierWithoutPasswordShouldReturn400() {
         courier
                 .setLogin("couriersamokata1");
 
@@ -53,7 +57,8 @@ public class CreatingACourierTest extends BaseTest {
 
     @Test
     @DisplayName("Should return 409 when creating a courier with an already used login")
-    public void createCourier_WithExistingLogin_ShouldReturn409() {
+    @Description("Verify that creating a courier with an existing login fails.\nExpected result: HTTP 409 response and an error message \"Этот логин уже используется. Попробуйте другой.\" in response body.")
+    public void createCourierWithExistingLoginShouldReturn409() {
         String login = "couriersamokata1";
         courier
                 .setLogin(login)
@@ -76,7 +81,8 @@ public class CreatingACourierTest extends BaseTest {
 
     @Test
     @DisplayName("Should return 409 when trying to create two identical couriers")
-    public void createCourier_TwiceWithSameData_ShouldReturn409() {
+    @Description("Verify that creating a courier twice with the same data fails.\nExpected result: HTTP 409 response and an error message \"Этот логин уже используется. Попробуйте другой.\" in response body.")
+    public void createCourierTwiceWithSameDataShouldReturn409() {
         courier
                 .setLogin("couriersamokata1")
                 .setPassword("qwerty123");
@@ -102,6 +108,5 @@ public class CreatingACourierTest extends BaseTest {
             courier.setCourierId(courierId);
             courierSteps.deleteCourier(courier);
         }
-
     }
 }
