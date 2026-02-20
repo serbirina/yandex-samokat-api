@@ -1,5 +1,4 @@
-# Sprint_7
-## Automated API tests for "Yandex Samokat"
+# Automated API tests for "Yandex Samokat"
 Tests cover scenarios of using API endpoints for creating a courier, authenticating a courier, creating orders, and fetching order lists.
 Tests are implemented with Java, JUnit, RestAssured, and generate Allure reports.
 
